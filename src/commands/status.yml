@@ -10,6 +10,12 @@ parameters:
       Enter either your Webhook value or use the CircleCI UI to add your
       token under the 'SLACK_WEBHOOK' env var
 
+  run:
+    type: string
+    default: ""
+    description: A command to run before sending a message
+    
+
   success_message:
     type: string
     default: ":tada: A $CIRCLE_JOB job has succeeded!"
@@ -102,6 +108,8 @@ steps:
       when: always
       command: |
         current_branch_in_filter=false
+
+        eval "<< parameters.run >>"
 
         IFS="," read -ra BRANCH_FILTERS \<<< "<< parameters.only_for_branches >>"
 
